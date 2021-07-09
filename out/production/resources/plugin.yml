@@ -1,0 +1,11 @@
+name: SpawnCuboids
+version: 1.0
+author: Mateusz#1738
+main: me.mateusz.SpawnCuboids
+api-version: 1.17
+depend: [WorldEdit, WorldGuard, Vault]
+commands:
+ cuboid:
+    description: Main command
+    usage: /<command> [about/info/add/remove]
+    permission: sc.main
