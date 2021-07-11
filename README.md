@@ -1,6 +1,12 @@
 # SpawnCuboids
 A simple plot plugin on your server's spawn for 1.17!
 
+# Requirements
+
+* worldedit
+* worldguard
+* vault
+
 # Usage
 First edit the config.yml in the plugins folder to your liking, then create a square plot with a one block center, place a spruce sign and write
 
@@ -8,7 +14,7 @@ First edit the config.yml in the plugins folder to your liking, then create a sq
  
  here goes your plot price
  
- here goes plot radius - how far away from the center is the plto broder
+ here goes plot radius - how far away from the center is the plot broder
   
   
   
