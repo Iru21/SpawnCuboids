@@ -64,6 +64,7 @@ class cCuboid(override var name: String, jplugin : JavaPlugin) : ICommand {
                         if(args[1].isNotEmpty()) {
                             val foundPlayer : Player? = SpawnCuboids.server.getPlayer(args[1])
                             if(foundPlayer != null) {
+                                PlayerData.CreateOrGetPlayer(foundPlayer)
                                 if(PlayerData.get(foundPlayer, "status") == Status.NONE.toString()) {
                                     val cuboid : Cuboid? = CuboidData.GetCuboid(playerCuboidId)
                                     if(cuboid != null) {

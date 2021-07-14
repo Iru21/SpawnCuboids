@@ -62,52 +62,6 @@ class PlayerData(jplugin : JavaPlugin) {
         PlayerData.save(PlayerDataFile)
     }
 
-//    fun updateIfOld(p : Player, key : String, default : Any) {
-//        val UserDataFile = File(SpawnCuboids.dataFolder, "userdata" + File.separator + p.uniqueId + ".yml")
-//        val config = YamlConfiguration.loadConfiguration(UserDataFile)
-//        if(!config.contains(key)) {
-//            config.set(key, default.toString())
-//            UpdateOrSaveUser(p, config)
-//        }
-//        return
-//    }
-//
-//    fun CheckIfExists(p : Player) : Boolean {
-//        val UserDataFile = File(SpawnCuboids.dataFolder, "userdata" + File.separator + p.uniqueId + ".yml")
-//        return UserDataFile.exists()
-//    }
-//
-////    fun Validate(p : Player, pass : String) : Boolean {
-////        val UserDataFile = File(SpawnCuboids.dataFolder, "userdata" + File.separator + p.uniqueId + ".yml")
-////        val config = YamlConfiguration.loadConfiguration(UserDataFile)
-////        if(HashUtil.toSHA256(pass) == config.get("pass")) return true
-////        return false
-////    }
-//
-//    fun PasswordMatchesRules(pass : String) : Boolean {
-//        return (pass.length >= 6 && pass.contains(Regex("[A-Z]")) && pass.contains(Regex("[0-9]")))
-//    }
-//
-//    fun DeleteUser(p : Player) : Boolean {
-//        try {
-//            val UserDataFile = File(SpawnCuboids.dataFolder, "userdata" + File.separator + p.uniqueId + ".yml")
-//            UserDataFile.delete()
-//            return true
-//        } catch(e : Exception) {
-//            return false
-//        }
-//    }
-//
-//    fun DeleteUser(p : OfflinePlayer) : Boolean {
-//        try {
-//            val UserDataFile = File(SpawnCuboids.dataFolder, "userdata" + File.separator + p.uniqueId + ".yml")
-//            UserDataFile.delete()
-//            return true
-//        } catch(e : Exception) {
-//            return false
-//        }
-//    }
-//
     fun get(p : Player, key : String) : Any? {
         val PlayerDataFile = File(SpawnCuboids.dataFolder, "PlayerData" + File.separator + p.uniqueId + ".yml")
         val config = YamlConfiguration.loadConfiguration(PlayerDataFile)
