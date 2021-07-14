@@ -17,6 +17,7 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion
 import me.mateusz.data.Cuboid
 import me.mateusz.data.PlayerData
 import me.mateusz.data.Status
+import me.mateusz.translation.Translation
 import me.mateusz.util.GetConfig
 import org.bukkit.Material
 import org.bukkit.block.Sign
@@ -31,9 +32,10 @@ class cCuboid(override var name: String, jplugin : JavaPlugin) : ICommand {
 
     private val PlayerData : PlayerData = PlayerData(SpawnCuboids)
 
+    private val translation = Translation(SpawnCuboids)
+
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
 
-        val prefix = GetConfig("prefix")
         val color = GetConfig("mainColor")
 
         if(sender is Player) {
@@ -52,7 +54,7 @@ class cCuboid(override var name: String, jplugin : JavaPlugin) : ICommand {
                     if(playerStatusString == Status.OWNER.toString()) {
                         delete(p, p, playerCuboidId, true)
                     } else {
-                        p.sendMessage("$prefix §cYou don't own a cuboid${color}§l!")
+                        p.sendMessage(translation.get("cCuboid_delete_noowncuboid"))
                     }
                 }
                 "add" -> {
@@ -66,7 +68,7 @@ class cCuboid(override var name: String, jplugin : JavaPlugin) : ICommand {
                                     val cuboid : Cuboid? = CuboidData.GetCuboid(playerCuboidId)
                                     if(cuboid != null) {
                                         if(cuboid.members.size == GetConfig("maxMemberCount").toInt()) {
-                                            p.sendMessage("$prefix §cYou've hit a max member limit of $color${GetConfig("maxMemberCount")}§c members$color§l!")
+                                            p.sendMessage(String.format(translation.get("cCuboid_add_maxmembers"),GetConfig("maxMemberCount")))
                                             return true
                                         }
                                         PlayerData.setCuboid(foundPlayer, cuboid, Status.MEMBER)
@@ -77,24 +79,24 @@ class cCuboid(override var name: String, jplugin : JavaPlugin) : ICommand {
                                         val regions = container[weWorld]
                                         val rg = regions?.getRegion(playerCuboidId)
                                         rg?.owners?.addPlayer(foundPlayer.uniqueId)
-                                        p.sendMessage("$prefix §7Successfully added$color ${foundPlayer.name}§7 to your cuboid$color§l!")
-                                        foundPlayer.sendMessage("$prefix §7You've been added to$color cuboid §7with id $color$playerCuboidId§7 by $color${p.name}§l!§7 Hooray$color§l!!")
-                                        foundPlayer.sendMessage("$prefix §7Remember you can always leave with §f/${color}cuboid §fleave$color§l!")
+                                        p.sendMessage(String.format(translation.get("cCuboid_add_success"),foundPlayer.name))
+                                        foundPlayer.sendMessage(String.format(translation.get("cCuboid_add_added"), playerCuboidId, p.name))
+                                        foundPlayer.sendMessage(translation.get("cCuboid_add_leave"))
                                     } else {
-                                        p.sendMessage("$prefix §cThere has been an error! I couldn't find any cuboid with id $playerCuboidId$color§l! §cPlease contact the administrator$color§l!")
+                                        p.sendMessage(String.format(translation.get("cCuboid_add_errornocuboid"), playerCuboidId))
                                         return true
                                     }
                                 } else {
-                                    p.sendMessage("$prefix §cThis player already owns or is a member of a cuboid$color§l!")
+                                    p.sendMessage(translation.get("cCuboid_add_alreadyhas"))
                                 }
                             } else {
-                                p.sendMessage("$prefix §cInvalid player$color§l!")
+                                p.sendMessage(translation.get("cCuboid_add_invalidplayer"))
                             }
                         } else {
-                            p.sendMessage("$prefix §cProvide a player to add$color§l!")
+                            p.sendMessage(translation.get("cCuboid_add_noplayer"))
                         }
                     } else {
-                        p.sendMessage("$prefix §cYou don't own a cuboid${color}§l!")
+                        p.sendMessage(translation.get("cCuboid_add_noowncuboid"))
                     }
                 }
                 "remove" -> {
@@ -115,23 +117,23 @@ class cCuboid(override var name: String, jplugin : JavaPlugin) : ICommand {
                                         val regions = container[weWorld]
                                         val rg = regions?.getRegion(playerCuboidId)
                                         rg?.owners?.removePlayer(foundPlayer.uniqueId)
-                                        p.sendMessage("$prefix §7Successfully removed$color ${foundPlayer.name}§7 from your cuboid$color§l!")
-                                        foundPlayer.sendMessage("$prefix §7You've been removed from$color cuboid §7with id $color$playerCuboidId§7 by $color${p.name}§l!")
+                                        p.sendMessage(String.format(translation.get("cCuboid_remove_success"), foundPlayer.name))
+                                        foundPlayer.sendMessage(String.format(translation.get("cCuboid_remove_removed"),playerCuboidId, p.name))
                                     } else {
-                                        p.sendMessage("$prefix §cThere has been an error! I couldn't find any cuboid with id $playerCuboidId$color§l! §cPlease contact the administrator$color§l!")
+                                        p.sendMessage(String.format(translation.get("cCuboid_remove_errornocuboid"), playerCuboidId))
                                         return true
                                     }
                                 } else {
-                                    p.sendMessage("$prefix §cThis player does not belong to your cuboid$color§l!")
+                                    p.sendMessage(translation.get("cCuboid_remove_notamember"))
                                 }
                             } else {
-                                p.sendMessage("$prefix §cInvalid player$color§l!")
+                                p.sendMessage(translation.get("cCuboid_remove_invalidplayer"))
                             }
                         } else {
-                            p.sendMessage("$prefix §cProvide a player to remove$color§l!")
+                            p.sendMessage(translation.get("cCuboid_remove_noplayer"))
                         }
                     } else {
-                        p.sendMessage("$prefix §cYou don't own a cuboid${color}§l!")
+                        p.sendMessage(translation.get("cCuboid_remove_noowncuboid"))
                     }
                 }
                 "leave" -> {
@@ -148,15 +150,15 @@ class cCuboid(override var name: String, jplugin : JavaPlugin) : ICommand {
                             val regions = container[weWorld]
                             val rg = regions?.getRegion(playerCuboidId)
                             rg?.owners?.removePlayer(p.uniqueId)
-                            p.sendMessage("$prefix §7Successfully left$color cuboid §7with id $color$playerCuboidId§l!")
+                            p.sendMessage(String.format(translation.get("cCuboid_leave_success"), playerCuboidId))
                             val owner = SpawnCuboids.server.getPlayer(UUID.fromString(cuboid.owner))
-                            owner?.sendMessage("$prefix §7$color${p.name} §7has left your cuboid$color§l!")
+                            owner?.sendMessage(String.format(translation.get("cCuboid_leave_hasleft"), p.name))
                         } else {
-                            p.sendMessage("$prefix §cThere has been an error! I couldn't find any cuboid with id $playerCuboidId$color§l! §cPlease contact the administrator$color§l!")
+                            p.sendMessage(String.format(translation.get("cCuboid_leave_errornocuboid"), playerCuboidId))
                             return true
                         }
                     } else {
-                        p.sendMessage("$prefix §cYou're not a member of a cuboid'${color}§l!")
+                        p.sendMessage(translation.get("cCuboid_leave_notincuboid"))
                     }
                 }
                 "info" -> {
@@ -180,29 +182,26 @@ class cCuboid(override var name: String, jplugin : JavaPlugin) : ICommand {
                                     for(member in cuboid.members) {
                                         members.add(SpawnCuboids.server.getOfflinePlayer(UUID.fromString(member)).name as String)
                                     }
+                                    val strmembers = members.toString().replace("[", "§8[§f").replace("]", "§8]§f").replace(",", "§8,§f")
                                     p.sendMessage(
                                         """ 
                                         §8§k|
                                         §8[${color}SpawnCuboids§8] §8- §7Cuboid ${color}${region.id} §7info
-                                          §8- ${color}Id§8: §f${cuboid.id}
-                                          §8- ${color}Owner§8: §f${cuboidOwner}
-                                          §8- ${color}Members§8: §f${members.toString().replace("[", "§8[§f").replace("]", "§8]§f").replace(",", "§8,§f")}
-                                          §8- ${color}Last Price§8: §f${cuboid.price}§7$
-                                          §8- ${color}Center§8: §f${cuboid.centerLocation.blockX} §8| §f${cuboid.centerLocation.blockY} §8| §f${cuboid.centerLocation.blockZ}
-                                          §8- ${color}Radius§8: §f${cuboid.radius}
-                                          §8- ${color}Size§8: §f${size}§7x§f${size}
+                                          §8- ${String.format(translation.get("cCuboid_info_id"), cuboid.id)}
+                                          §8- ${String.format(translation.get("cCuboid_info_owner"), cuboidOwner)}
+                                          §8- ${String.format(translation.get("cCuboid_info_members"), strmembers)}
+                                          §8- ${String.format(translation.get("cCuboid_info_center"), cuboid.centerLocation.blockX, cuboid.centerLocation.blockY, cuboid.centerLocation.blockZ)}
+                                          §8- ${String.format(translation.get("cCuboid_info_radius"), cuboid.radius)}
+                                          §8- ${String.format(translation.get("cCuboid_info_size"), size, size)}
                                         §8§k|
                                         """.trimIndent()
                                     )
-                                } else {
-                                    p.sendMessage("$prefix §7There's no (more) cuboids where you stand${color}§l!")
+                                    return true
                                 }
-                            } else {
-                                p.sendMessage("$prefix §7There's no (more) cuboids where you stand${color}§l!")
                             }
                         }
                     } else {
-                        p.sendMessage("$prefix §7There's no cuboids where you stand${color}§l!")
+                        p.sendMessage(translation.get("cCuboid_info_nocuboids"))
                     }
                 }
                 "admin" -> {
@@ -216,21 +215,21 @@ class cCuboid(override var name: String, jplugin : JavaPlugin) : ICommand {
                             "reload" -> {
                                 val file = File(SpawnCuboids.dataFolder.absolutePath + "/config.yml")
                                 SpawnCuboids.config.load(file)
-                                p.sendMessage("§8[${color}SpawnCuboids§8] §7Reloaded ${color}config${color}§l!")
+                                p.sendMessage(translation.get("cCuboid_adminreload_reloaded"))
                                 p.playSound(p.location, Sound.BLOCK_SWEET_BERRY_BUSH_PICK_BERRIES, 1F, 1F)
                             }
                             "delete" -> {
                                 if(args[2].isNotEmpty()) {
                                     val foundPlayer : Player? = SpawnCuboids.server.getPlayer(args[2])
                                     if(foundPlayer == null) {
-                                        p.sendMessage("$prefix §cInvalid player${color}§l!")
+                                        p.sendMessage(translation.get("cCuboid_admindelete_invalidplayer"))
                                         return true
                                     }
                                     val playerData = PlayerData.CreateOrGetPlayer(foundPlayer)
                                     val cuboid = playerData["cuboid"] as String
                                     if(playerData["status"] == Status.OWNER.toString())
                                         delete(p, foundPlayer, cuboid, true)
-                                    else p.sendMessage("$prefix §cPlayer does not own a cuboid${color}§l!")
+                                    else p.sendMessage(translation.get("cCuboid_admindelete_noowncuboid"))
                                 }
                             }
                             "destroy" -> {
@@ -238,7 +237,7 @@ class cCuboid(override var name: String, jplugin : JavaPlugin) : ICommand {
                                     val CuboidDataFile =
                                         File(SpawnCuboids.dataFolder, "CuboidData" + File.separator + args[2] + ".yml")
                                     if (!CuboidDataFile.exists()) {
-                                        p.sendMessage("$prefix §cInvalid cuboid id${color}§l!")
+                                        p.sendMessage(translation.get("cCuboid_admindestroy_invalidcuboid"))
                                         return true
                                     }
                                     val cuboidObject = CuboidData.GetCuboid(args[2])
@@ -261,13 +260,13 @@ class cCuboid(override var name: String, jplugin : JavaPlugin) : ICommand {
                                             }
                                             destroy(p, CuboidDataFile, cuboidObject)
                                         } else {
-                                            p.sendMessage("$prefix §cCould not find the cuboid owner§l!")
+                                            p.sendMessage(translation.get("cCuboid_admindestroy_noowner"))
                                         }
                                     } else {
                                         destroy(p, CuboidDataFile, null)
                                     }
                                 } else {
-                                    p.sendMessage("$prefix §cProvide a cuboid id $color§l!")
+                                    p.sendMessage(translation.get("cCuboid_admindestroy_nocuboid"))
                                     return true
                                 }
                             }
@@ -287,12 +286,9 @@ class cCuboid(override var name: String, jplugin : JavaPlugin) : ICommand {
 
     private fun delete(invoker : Player, p : Player?, playerCuboidId : String, sign : Boolean) {
 
-        val prefix = GetConfig("prefix")
-        val color = GetConfig("mainColor")
-
         val cuboid : Cuboid? = CuboidData.GetCuboid(playerCuboidId)
         if (cuboid == null) {
-            invoker.sendMessage("$prefix §cThere has been an error! I couldn't find any cuboid with id $playerCuboidId$color§l! §cPlease contact the administrator$color§l!")
+            invoker.sendMessage(String.format(translation.get("cCuboid_delete_errornocuboid"), playerCuboidId))
             return
         }
         if (p != null) {
@@ -327,7 +323,7 @@ class cCuboid(override var name: String, jplugin : JavaPlugin) : ICommand {
         region3.contract(BlockVector3.at(0, -1, 0))
         var baseBlock : Material? = Material.matchMaterial(SpawnCuboids.config.get("baseBlock") as String)
         if(baseBlock == null) baseBlock = Material.GRASS_BLOCK
-        invoker.sendMessage("$prefix §7Regenerating terrain...§l!")
+        invoker.sendMessage(translation.get("cCuboid_delete_regen"))
         WorldEdit.getInstance().newEditSession(weWorld).use { editSession ->
             weWorld.regenerate(region, editSession)
         }
@@ -336,24 +332,21 @@ class cCuboid(override var name: String, jplugin : JavaPlugin) : ICommand {
             editSession.setBlocks(region3, BukkitAdapter.adapt(baseBlock.createBlockData()))
         }
 
-        invoker.sendMessage("$prefix §7Successfully deleted$color cuboid§7 with id $color$playerCuboidId§l!")
+        invoker.sendMessage(String.format(translation.get("cCuboid_delete_success"),playerCuboidId))
         if(sign) {
             WorldEdit.getInstance().newEditSession(weWorld).use { editSession ->
                 editSession.setBlock(weSignLocation, BukkitAdapter.adapt(Material.SPRUCE_SIGN.createBlockData()))
             }
             val signBlock : Sign = cuboid.centerLocation.block.state as Sign
-            signBlock.setLine(0,"$color§lRMB §fto §l§nbuy")
-            signBlock.setLine(1, "$newPrice$")
-            signBlock.setLine(2,"$color§l^ §fPrice $color§l^")
-            signBlock.setLine(3,"$color§lId§8: §f$playerCuboidId")
+            signBlock.setLine(0,translation.get("sign_line_1"))
+            signBlock.setLine(1, String.format(translation.get("sign_line_2"), newPrice))
+            signBlock.setLine(2,translation.get("sign_line_3"))
+            signBlock.setLine(3,String.format(translation.get("sign_line_4"), playerCuboidId))
             signBlock.update()
         }
     }
 
     private fun destroy(p : Player, data : File, cuboid : Cuboid?) {
-
-        val prefix = GetConfig("prefix")
-        val color = GetConfig("mainColor")
 
         if(cuboid != null) {
             var owner : Player? = null
@@ -367,7 +360,7 @@ class cCuboid(override var name: String, jplugin : JavaPlugin) : ICommand {
             regions!!.removeRegion(cuboid.id)
         }
         data.delete()
-        p.sendMessage("$prefix §7Successfully destroyed$color cuboid§7 with id $color${cuboid!!.id}§l!")
+        p.sendMessage(String.format(translation.get("cCuboid_destroy_success"), cuboid!!.id))
     }
 
     private fun about(p : Player) {
@@ -378,27 +371,28 @@ class cCuboid(override var name: String, jplugin : JavaPlugin) : ICommand {
             p.sendMessage(
                 """ 
                     §8§k|
-                    §8[${color}SpawnCuboids§8] §8- §7Commands
+                    §8[${color}SpawnCuboids§8] §8- ${translation.get("cCuboid_about_commands")}
                       §8- §f/${color}cuboid §8[§7about§f/§7info§f/§7delete§f/§7add§f/§7remove/§7leave§f/§7admin§8]
-                      §8- §f/${color}cuboid §fdelete §8- §4§l(!) §cDoes not refund the money! §4§l(!)
+                      §8- §f/${color}cuboid §fdelete §8- ${translation.get("cCuboid_about_norefund")}
                       §8- §f/${color}cuboid §fadmin §8[§7reload§f/§7delete§f/§7destroy§8]
                     §8§k|
-                    §8[${color}SpawnCuboids§8] §8- §7Info
-                      §8- ${color}Version§8: §f${SpawnCuboids.description.version} §8- §f${SpawnCuboids.description.apiVersion}
-                      §8- ${color}Creator§8: §fIru21 §c- §7https://github.com/Iru21
+                    §8[${color}SpawnCuboids§8] §8- ${translation.get("cCuboid_about_info")}
+                      §8- ${color}${translation.get("cCuboid_about_version")}§8: §f${SpawnCuboids.description.version} §8- §f${SpawnCuboids.description.apiVersion}
+                      §8- ${color}${translation.get("cCuboid_about_creator")}§8: §fIru21 §c- §7https://github.com/Iru21
                     §8§k|
                 """.trimIndent()
             )
         } else {
             p.sendMessage(
                 """ 
-                    §8[${color}SpawnCuboids§8] §8- §7Commands
+                    §8[${color}SpawnCuboids§8] §8- ${translation.get("cCuboid_about_commands")}
                       §8- §f/${color}cuboid §8[§7about§f/§7info§f/§7delete§f/§7add§f/§7remove/§7leave§8]
-                      §8- §f/${color}cuboid §fdelete §8- §4§l(!) §cDoes not refund the money! §4§l(!)
+                      §8- §f/${color}cuboid §fdelete §8- ${translation.get("cCuboid_about_norefund")}
                     §8§k|
-                    §8[${color}SpawnCuboids§8] §8- §7Info
-                      §8- ${color}Version§8: §f${SpawnCuboids.description.version} §8- §f${SpawnCuboids.description.apiVersion}
-                      §8- ${color}Creator§8: §fIru21 §c- §7https://github.com/Iru21
+                    §8[${color}SpawnCuboids§8] §8- ${translation.get("cCuboid_about_info")}
+                      §8- ${translation.get("cCuboid_about_version")}§8: §f${SpawnCuboids.description.version} §8- §f${SpawnCuboids.description.apiVersion}
+                      §8- ${translation.get("cCuboid_about_creator")}§8: §fIru21 §c- §7https://github.com/Iru21
+                    §8§k|
                 """.trimIndent()
             )
         }

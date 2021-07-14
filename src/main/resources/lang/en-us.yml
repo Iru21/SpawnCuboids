@@ -1,0 +1,71 @@
+# Version - do not edit
+ver: 1
+# Translation - feel free to edit
+# [where]_[section]_[key]
+# {{prefix}} will be replaced with prefix from config
+# {{color}} will be replaced with mainColor from config
+
+cCuboid_about_commands: "{{color}}Commands"
+cCuboid_about_norefund: "&4&l(!) &cDoes not refund the money! &4&l(!)"
+cCuboid_about_info: "{{color}}Info"
+cCuboid_about_version: "{{color}}Version"
+cCuboid_about_creator: "{{color}}Creator"
+
+cCuboid_delete_noowncuboid: "{{prefix}} &cYou don't own a cuboid{{color}}&l!"
+cCuboid_delete_errornocuboid: "{{prefix}} &cThere has been an error! I couldn't find any cuboid with id {{color}}%s&l! &cPlease contact the administrator{{color}}&l!"
+cCuboid_delete_regen: "{{prefix}} &7Regenerating terrain...&l!"
+cCuboid_delete_success: "{{prefix}} &7Successfully deleted{{color}} cuboid&7 with id {{color}}%s&l!"
+
+cCuboid_add_noowncuboid: "{{prefix}} &cYou don't own a cuboid{{color}}&l!"
+cCuboid_add_noplayer: "{{prefix}} &cProvide a player to add{{color}}&l!"
+cCuboid_add_invalidplayer: "{{prefix}} &cInvalid player{{color}}&l!"
+cCuboid_add_alreadyhas: "{{prefix}} &cThis player already owns or is a member of a cuboid{{color}}&l!"
+cCuboid_add_errornocuboid: "{{prefix}} &cThere has been an error! I couldn't find any cuboid with id {{color}}%s&l! &cPlease contact the administrator{{color}}&l!"
+cCuboid_add_maxmembers: "{{prefix}} &cYou've hit a max member limit of {{color}}%s&c members{{color}}&l!"
+cCuboid_add_success: "{{prefix}} &7Successfully added{{color}} %s&7 to your cuboid{{color}}&l!"
+cCuboid_add_added: "{{prefix}} &7You've been added to{{color}} cuboid &7with id {{color}}%s&7 by {{color}}%s&l!&7 Hooray{{color}}&l!!"
+cCuboid_add_leave: "{{prefix}} &7Remember you can always leave with &f/{{color}}cuboid &fleave{{color}}&l!"
+
+cCuboid_remove_noowncuboid: "{{prefix}} &cYou don't own a cuboid{{color}}&l!"
+cCuboid_remove_noplayer: "{{prefix}} &cProvide a player to remove{{color}}&l!"
+cCuboid_remove_invalidplayer: "{{prefix}} &cInvalid player{{color}}&l!"
+cCuboid_remove_notamember: "{{prefix}} &cThis player does not belong to your cuboid{{color}}&l!"
+cCuboid_remove_errornocuboid: "{{prefix}} &cThere has been an error! I couldn't find any cuboid with id {{color}}%s&l! &cPlease contact the administrator{{color}}&l!"
+cCuboid_remove_success: "{{prefix}} &7Successfully removed{{color}} %s&7 from your cuboid{{color}}&l!"
+cCuboid_remove_removed: "{{prefix}} &7You've been removed from{{color}} cuboid &7with id {{color}}$%s&7 by {{color}}%s&l!"
+
+cCuboid_leave_notincuboid: "{{prefix}} &cYou're not a member of a cuboid'{{color}}&l!"
+cCuboid_leave_errornocuboid: "{{prefix}} &cThere has been an error! I couldn't find any cuboid with id {{color}}%s&l! &cPlease contact the administrator{{color}}&l!"
+cCuboid_leave_success: "{{prefix}} &7Successfully left{{color}} cuboid &7with id {{color}}$playerCuboidId&l!"
+cCuboid_leave_hasleft: "{{prefix}} &7{{color}}%s &7has left your cuboid{{color}}&l!"
+
+cCuboid_info_nocuboid: "{{prefix}} &7There's no cuboids where you stand{{color}}&l!"
+cCuboid_info_id: "{{color}}Id&8: &f%s"
+cCuboid_info_owner: "{{color}}Owner&8: &f%s"
+cCuboid_info_members: "{{color}}Members&8: &f%s"
+cCuboid_info_lastprice: "{{color}}Last Price&8: &f%s&7$"
+cCuboid_info_center: "{{color}}Center&8: &f%s &8| &f%s &8| &f%s"
+cCuboid_info_radius: "{{color}}Radius&8: &f%s"
+cCuboid_info_size: "{{color}}Size&8: &f%s&7x&f%s"
+
+cCuboid_adminreload_reloaded: "&8[{{color}}SpawnCuboids&8] &7Reloaded {{color}}config{{color}}&l!"
+
+cCuboid_admindelete_invalidplayer: "{{prefix}} &cInvalid player{{color}}&l!"
+cCuboid_admindelete_noowncuboid: "{{prefix}} &cPlayer does not own a cuboid{{color}}&l!"
+
+cCuboid_admindestroy_invalidcuboid: "{{prefix}} &cInvalid cuboid id{{color}}&l!"
+cCuboid_admindestroy_nocuboid: "{{prefix}} &cProvide a cuboid id {{color}}&l!"
+cCuboid_admindestroy_noowner: "{{prefix}} &cCould not find the cuboid owner&l!"
+
+cCuboid_destroy_success: "{{prefix}} &7Successfully destroyed{{color}} cuboid&7 with id {{color}}%s&l!"
+
+signclick_errornocuboid: "{{prefix}} &cThere has been an error! I couldn't find any cuboid with id {{color}}%s&l! &cPlease contact the administrator{{color}}&l!"
+signclick_notenoughmoney: "{{prefix}} &cYou don't have enough money{{color}}&l!"
+signclick_success: "{{prefix}} &7Successfully bought{{color}} cuboid&7 with id {{color}}%s&l!"
+
+signcreate_success: "{{prefix}} &7Successfully created a cuboid{{color}}&l!"
+
+sign_line_1: "{{color}}&lRMB &fto &l&nbuy"
+sign_line_2: "%s$"
+sign_line_3: "{{color}}&l^ &fPrice {{color}}&l^"
+sign_line_4: "{{color}}&lId&8: &f%s"

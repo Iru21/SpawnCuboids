@@ -12,6 +12,7 @@ import me.mateusz.data.Cuboid
 import me.mateusz.data.CuboidData
 import me.mateusz.data.PlayerData
 import me.mateusz.data.Status
+import me.mateusz.translation.Translation
 import me.mateusz.util.GetConfig
 import net.md_5.bungee.api.ChatColor
 import org.bukkit.Material
@@ -33,17 +34,18 @@ class SignClick(sc : JavaPlugin) : Listener {
     private val CuboidData : CuboidData = CuboidData(SpawnCuboids)
     private val PlayerData : PlayerData = PlayerData(SpawnCuboids)
 
+    val translation = Translation(SpawnCuboids)
+
     @EventHandler
     fun onSignClick(e : PlayerInteractEvent) {
-
-        val prefix = GetConfig("prefix")
-        val color = GetConfig("mainColor")
 
         val p : Player = e.player
         if(e.clickedBlock?.type == Material.SPRUCE_SIGN) {
             if(e.action == Action.RIGHT_CLICK_BLOCK) {
                 val sign : Sign = e.clickedBlock!!.state as Sign
-                if(sign.getLine(0) == "$color§lRMB §fto §l§nbuy") {
+                SpawnCuboids.server.consoleSender.sendMessage(sign.getLine(0).replace("§", "*"))
+                SpawnCuboids.server.consoleSender.sendMessage(translation.get("sing_line_1").replace("§", "*"))
+                if(sign.getLine(0) == translation.get("sign_line_1")) {
                     val op : OfflinePlayer = e.player
                     val price = sign.getLine(1).dropLast(1).toDouble()
                     val id = sign.getLine(3).drop(12)
@@ -53,7 +55,7 @@ class SignClick(sc : JavaPlugin) : Listener {
                             if (cuboid != null) {
                                 CuboidData.set(cuboid, "owner", p.uniqueId.toString())
                             } else {
-                                p.sendMessage("$prefix §cThere has been an error! I couldn't find any cuboid with id $id$color§l! §cPlease contact the administrator$color§l!")
+                                p.sendMessage(String.format(translation.get("signclick_errornocuboid"), id))
                                 return
                             }
                             economy.econ?.withdrawPlayer(op, price)
@@ -69,9 +71,9 @@ class SignClick(sc : JavaPlugin) : Listener {
                                 )
                             }
                             PlayerData.setCuboid(p, cuboid, Status.OWNER)
-                            p.sendMessage("$prefix §7Successfully bought$color cuboid§7 with id $color$id §l!")
+                            p.sendMessage(String.format(translation.get("signclick_success"), id))
                         } else {
-                            p.sendMessage("$prefix §cYou don't have enough money$color§l!")
+                            p.sendMessage(translation.get("signclick_notenoughmoney"))
                         }
                     }
                 }

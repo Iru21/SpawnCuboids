@@ -18,6 +18,9 @@ fun GetConfig(key : String) : String {
         "maxMemberCount" -> {
             return config.getString("maxMemberCount").toString()
         }
+        "lang" -> {
+            return config.getString("lang").toString().lowercase()
+        }
     }
 
     return "none"
